@@ -30,8 +30,8 @@ $objectA1 = new ClassA('1');
 $objectA2 = new ClassA('2');
 $objectB1 = new ClassB('1');
 $objectB2 = new ClassB('2');
-$objectC1 = new ClassC('1');
-$objectC2 = new ClassC('2');
+$objectC1 = new ClassC('1', 'Some Description');
+$objectC2 = new ClassC('2', 'Some Other Desc');
 
 
 //Create a List for holding ClassB
