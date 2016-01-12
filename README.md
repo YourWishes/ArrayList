@@ -34,3 +34,37 @@ $list->filter('getVersion', 1.00);
 To get started, download the ArrayList.php class file and put it in your project somewhere. Then simply require it as you would any other PHP file.
 
 And your set! It's that easy.
+
+
+# Known Bugs
+At this stage I only know of one bug, very minor for those used to the Java way of iterating over lists.
+
+Unlike Java there is no way of checking if an array is being currently iterated over, there is a 'sort of hacky' way of doing it, however it would result in more exceptions than necessary.
+
+What does this mean? Well it means that ConcurrentModificationExceptions cannot be handled properly, and should be treated with care.
+
+### How to replicate:
+```
+$obj1 = new MyClass('Something');
+$obj2 = new MyClass('Something Else');
+
+$myArr = new ArrayList('MyClass');
+$myArr->add($obj1);
+$myArr->add($obj2);
+
+//...
+
+foreach($myArr as $obj) {
+    if($obj->getData() == 'Something') $myArr->remove($obj);
+}
+```
+Will cause the iteration to only occur once, since the first object is iterated, removed, and the second object becomes the first object, so no second object is ever iterated over.
+
+### How to fix:
+```
+//...
+foreach($myArr->createCopy() as $obj) {
+    if($obj->getData() == 'Something') $myArr->remove($obj);
+}
+```
+Since the array is duplicated before being iterated over, the cloned and iterated array is never actually modified.
