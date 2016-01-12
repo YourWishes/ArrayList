@@ -133,7 +133,7 @@ class ArrayList implements Iterator, ArrayAccess, JsonSerializable {
     public function isValidClass($className) {
         if(!isset($this->classNames)) return true;
         foreach($this->classNames as $name) {
-            if($className !== $name) continue;
+            if(!is_subclass_of($name, $className)) continue;
             return true;
         }
         return false;
